@@ -1,7 +1,19 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
+require("dotenv").config();
 const PORT = process.env.PORT || 3500;
 
+const allowedOrigins = ["0.0.0.0"];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Credentials", true);
+  }
+  next();
+});
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
