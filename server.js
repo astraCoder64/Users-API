@@ -22,6 +22,8 @@ app.use((req, res, next) => {
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
+app.use("/login", require("./loginRoute"));
+
 mongoose.connection.once("open", () => {
   console.log("MongoDB connection established successfully");
 
