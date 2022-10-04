@@ -2,6 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 require("dotenv").config();
+const mongoose = require("mongoose");
+const mongoConn = require("./config/dbConn");
+
+// Connect to MongoDB
+mongoConn();
+
 const PORT = process.env.PORT || 3500;
 
 const allowedOrigins = ["0.0.0.0"];
@@ -16,4 +22,11 @@ app.use((req, res, next) => {
 
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+mongoose.connection.once("open", () => {
+  console.log("MongoDB connection established successfully");
+
+  const PORT = 4000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
+  });
+});
